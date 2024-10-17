@@ -3,6 +3,7 @@ CREATE PROCEDURE TempExecuteSQL
     @whereClause NVARCHAR(MAX) = NULL,  -- WHERE clause (optional)
     @linkedServer NVARCHAR(128) = NULL, -- Linked server name (optional)
     @database NVARCHAR(128),       -- Database name
+    @schema NVARCHAR(128),         -- Schema name
     @table NVARCHAR(128)           -- Table name
 AS
 BEGIN
@@ -17,8 +18,8 @@ BEGIN
         SET @sqlQuery = @sqlQuery + '[' + @linkedServer + '].';
     END
 
-    -- Append the database and table names
-    SET @sqlQuery = @sqlQuery + '[' + @database + '].dbo.[' + @table + ']';
+    -- Append the database, schema, and table names
+    SET @sqlQuery = @sqlQuery + '[' + @database + '].[' + @schema + '].[' + @table + ']';
 
     -- If a WHERE clause is provided, append it to the query
     IF @whereClause IS NOT NULL
